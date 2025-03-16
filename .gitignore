@@ -1,0 +1,6 @@
+# Ignore generated output
+workspace_output.txt
+
+# Python temporary files
+__pycache__/
+*.py[cod]
