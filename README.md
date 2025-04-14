@@ -16,6 +16,8 @@ The tool is designed to help developers document their codebase, prepare for cod
 - **Customizable Filtering**: Allows you to specify which file types to include and which directories/files to exclude
 - **Encoding Handling**: Attempts to handle different file encodings (UTF-8 and CP1252)
 - **Statistics Reporting**: Provides feedback on the number of files and directories processed
+- **Android Project Support**: Includes specific handling for Android project files and directories
+- **Line Numbers**: Displays line numbers for each line of code for easy reference
 
 ## Requirements
 

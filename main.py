@@ -1,13 +1,13 @@
 import os
 
 # Define the directory you want to scan
-workspace_dir = 'd:\\AI-Scrper'
+workspace_dir = r'D:\code\your-program'
 
 # Define the output file
-output_file = 'd:\\AI-Scrper\\workspace_output.txt'
+output_file = r'D:\code\your-program\project-snapshot.txt'
 
 # Define file extensions to include (empty list means include all files)
-code_extensions = ['.py', '.js', '.html', '.css', '.json', '.md', '.txt']
+code_extensions = []
 
 # Common build, dependency, and data directories across programming languages
 excluded_directories = [
@@ -18,7 +18,10 @@ excluded_directories = [
     # Dependencies
     'node_modules', 'vendor', 'packages', 'venv', 'env',
     # Data and Cache
-    'data', 'cache', '.cache', '__pycache__'
+    'data', 'cache', '.cache', '__pycache__',
+    # Android specific
+    '.gradle', 'build', '.idea', 'captures', '.externalNativeBuild',
+    '.cxx', 'release', 'debug', 'androidTest', 'test'
 ]
 
 # Common data, log, and temporary file extensions across programming languages
@@ -35,6 +38,8 @@ excluded_extensions = [
     '.pdb', '.idb', '.suo',
     # Documentation and reports
     '.txt', '.pdf', '.doc', '.docx'
+     # Android specific
+    '.apk', '.aab', '.dex', '.so', '.hprof', '.iml'
 ]
 
 # Function to check if a path should be excluded
@@ -61,6 +66,9 @@ def should_exclude(path, is_dir=False):
 # Track statistics for feedback
 processed_files = 0
 processed_dirs = 0
+
+# Ensure output directory exists
+os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
 # Open the output file in write mode
 with open(output_file, 'w', encoding='utf-8') as outfile:
@@ -90,6 +98,7 @@ with open(output_file, 'w', encoding='utf-8') as outfile:
         # Filter out excluded files
         filtered_files = [f for f in files if not should_exclude(os.path.join(root, f))]
         
+        # Modify the file content writing section
         for file in filtered_files:
             file_path = os.path.join(root, file)
             
@@ -104,14 +113,18 @@ with open(output_file, 'w', encoding='utf-8') as outfile:
                 
                 try:
                     with open(file_path, 'r', encoding='utf-8') as infile:
-                        outfile.write(infile.read())
+                        # Add line numbers to each line
+                        for line_num, line in enumerate(infile, 1):
+                            outfile.write(f'{line_num:4d}| {line}')
                 except UnicodeDecodeError:
                     try:
                         with open(file_path, 'r', encoding='cp1252') as infile:
-                            outfile.write(infile.read())
+                            # Add line numbers to each line
+                            for line_num, line in enumerate(infile, 1):
+                                outfile.write(f'{line_num:4d}| {line}')
                     except:
                         outfile.write(f"[Error: Unable to read file - might be binary or use different encoding]\n")
-                
+        
                 outfile.write('\n\n' + '-'*80 + '\n\n')
 
 # Print success message with statistics
