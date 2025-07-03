@@ -1,10 +1,13 @@
 import os
 
 # Define the directory you want to scan
-workspace_dir = r'D:\code\your-program'
+workspace_dir = r'D:\code\proxy_checker_project'
 
 # Define the output file
-output_file = r'D:\code\your-program\project-snapshot.txt'
+output_file = r'D:\code\proxy_checker_project\project-snapshot.txt'
+
+# Define specific folders to scan within the workspace_dir (leave empty to scan all)
+folders_to_scan = []
 
 # Define file extensions to include (empty list means include all files)
 code_extensions = []
@@ -16,9 +19,9 @@ excluded_directories = [
     # Build and Distribution
     'build', 'dist', 'out', 'target', 'bin', 'obj',
     # Dependencies
-    'node_modules', 'vendor', 'packages', 'venv', 'env',
+    'node_modules', 'vendor', 'packages', 'venv', 'env', '.svelte-kit', 'backend/venv',
     # Data and Cache
-    'data', 'cache', '.cache', '__pycache__',
+    'data', 'cache', '.cache', '__pycache__', 'pb_data', 'CHANGELOG.md', 'pb_migrations',
     # Android specific
     '.gradle', 'build', '.idea', 'captures', '.externalNativeBuild',
     '.cxx', 'release', 'debug', 'androidTest', 'test'
@@ -74,6 +77,9 @@ os.makedirs(os.path.dirname(output_file), exist_ok=True)
 with open(output_file, 'w', encoding='utf-8') as outfile:
     # Write the project layout
     for root, dirs, files in os.walk(workspace_dir):
+        # If specific folders are targeted, filter dirs at the top level
+        if folders_to_scan and root == workspace_dir:
+            dirs[:] = [d for d in dirs if d in folders_to_scan]
         # Filter out excluded directories (modifies dirs in-place)
         dirs[:] = [d for d in dirs if not should_exclude(os.path.join(root, d), is_dir=True)]
         processed_dirs += len(dirs)
@@ -92,6 +98,9 @@ with open(output_file, 'w', encoding='utf-8') as outfile:
 
     # Write each file's name and content
     for root, dirs, files in os.walk(workspace_dir):
+        # If specific folders are targeted, filter dirs at the top level
+        if folders_to_scan and root == workspace_dir:
+            dirs[:] = [d for d in dirs if d in folders_to_scan]
         # Filter out excluded directories (modifies dirs in-place)
         dirs[:] = [d for d in dirs if not should_exclude(os.path.join(root, d), is_dir=True)]
         

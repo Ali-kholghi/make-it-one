@@ -13,7 +13,7 @@ The tool is designed to help developers document their codebase, prepare for cod
 
 - **Directory Structure Visualization**: Creates an indented tree view of your project's folder structure
 - **Code Content Extraction**: Extracts and combines the content of all code files into a single document
-- **Customizable Filtering**: Allows you to specify which file types to include and which directories/files to exclude
+- **Customizable Filtering**: Allows you to specify which directories or file types to include and which directories/files to exclude
 - **Encoding Handling**: Attempts to handle different file encodings (UTF-8 and CP1252)
 - **Statistics Reporting**: Provides feedback on the number of files and directories processed
 - **Android Project Support**: Includes specific handling for Android project files and directories
